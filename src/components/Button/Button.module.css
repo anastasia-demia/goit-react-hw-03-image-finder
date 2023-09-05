@@ -3,11 +3,11 @@
   display: flex;
   align-self: center;
   padding: 10px 20px;
-  background-color: #353b3c;
-  color: #eef0f2;
+  background-color: #254441;
+  color: #F3EFC5;
   border-radius: 50px;
   font-size: 20px;
 }
 .button:hover {
-  background-color: #5d5353;
+  background-color: #8FBBAE;
 }
