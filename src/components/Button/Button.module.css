@@ -2,6 +2,9 @@
 .button {
   display: flex;
   align-self: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 5px;
   padding: 10px 20px;
   background-color: #254441;
   color: #F3EFC5;
