@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { ImageGalleryItem } from './ImageGalleryItem/Item';
+import { ImageGallery } from './ImageGallery/Gallery';
 import { Button } from './Button/Button';
 import { Searchbar } from './Searchbar/Searchbar';
 import { Loader } from './Loader/Loader';
@@ -21,7 +22,7 @@ export class App extends Component {
   render() {
 
     return(
-      <ImageGalleryItem/>,
+      <ImageGallery/>,
       <Searchbar/>
     )
   };
