@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { Button } from 'components/Button/Button';
 import css from './Searchbar.module.css'
