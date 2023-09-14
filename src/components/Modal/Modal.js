@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
+import { createPortal } from 'react-dom';
 import css from './Modal.module.css'
 
 export class Modal extends Component {
@@ -13,22 +14,23 @@ export class Modal extends Component {
 
   handleKeyDown = event => {
     if (event.code === 'Escape') {
-      this.props.onClose();
+      this.props.switchModal();
     }
   };
 
   handleBackdropClick = event => {
     if (event.currentTarget === event.target) {
-      this.props.onClose();
+      this.props.switchModal();
     }
   };
 
   render() {
-    const { url, alt } = this.props;
-    return (
+    const { largeImageURL, tags } = this.props.largePic;
+
+    return createPortal(
       <div className={css.overlay} onClick={this.handleBackdpropClick}>
         <div className={css.modal}>
-          <img src={url} alt={alt}/>
+          <img src={largeImageURL} alt={tags}/>
         </div>
       </div>
     );
@@ -36,7 +38,5 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-  url: PropTypes.string,
-  alt: PropTypes.string,
-  handleBackdpropClick: PropTypes.func,
+  toggleModal: PropTypes.func.isRequired,
 };

@@ -2,9 +2,9 @@
 .button {
   display: flex;
   align-self: center;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 5px;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: 10px 20px;
   background-color: #254441;
   color: #F3EFC5;
@@ -14,4 +14,4 @@
   transition: border 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .button:hover {
-  border: 2px solid #C74540;}
+  border: 2px solid #F3EFC5;}

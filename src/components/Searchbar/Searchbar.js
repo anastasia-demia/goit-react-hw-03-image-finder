@@ -20,30 +20,26 @@ export class Searchbar extends Component {
     }
 
     this.props.onSubmit(this.state.searchQuery);
+
     this.setState({ searchQuery: '' });
-    event.currentTarget.reset();
   };
 
   render() {
     return (
       <header className={css.searchbar}>
         <form className={css.form} onSubmit={this.handleSubmit}>
-          <Button text="Search"/>
-
+          <Button text="Search" onBtnClick={this.handleSubmit}/>
           <input
             className={css.input}
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             onInput={this.handleInput}
+            value={this.state.searchQuery}
             placeholder="Search for images and photos"
           />
         </form>
       </header>
     );
   }
-};
-
-Searchbar.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };

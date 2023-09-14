@@ -1,13 +1,20 @@
 import { Hourglass } from "react-loader-spinner";
 
+
 export const Loader = () => {
+  const addStyle = {
+    display: "block",
+    margin: '100px auto',
+  };
+
   return (
     <Hourglass
       visible={true}
-      height="80"
-      width="80"
+      height="200"
+      width="200"
       ariaLabel="hourglass-loading"
       colors={['#C74540', '#ff6f59']}
+      wrapperStyle={addStyle}
     />
   )
 };
