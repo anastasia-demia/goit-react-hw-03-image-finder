@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import { createPortal } from 'react-dom';
 import css from './Modal.module.css'
 
-const modalRoot = document.querySelector('#modal-root');
 
 
 export class Modal extends Component {
@@ -21,21 +19,20 @@ export class Modal extends Component {
     }
   };
 
-  handleBackdropClick = event => {
+  handleClick = event => {
     if (event.currentTarget === event.target) {
       this.props.switchModal();
     }
   };
 
   render() {
-    return createPortal(
-      <div className={css.overlay} onClick={this.handleBackdpropClick}>
+    return (
+      <div className={css.overlay} onClick={this.handleClick}>
         <div className={css.modal}>
           <img src={this.props.largePic.largeImageURL} alt={this.props.largePic.tags}/>
         </div>
-      </div>,
-      modalRoot
-    );
+      </div>
+    )
   }
 }
 

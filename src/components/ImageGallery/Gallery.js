@@ -12,7 +12,7 @@ export class ImageGallery extends Component {
     error: null,
     status: 'idle',
     showModal: false,
-    showLoader: false,
+    loading: false,
     largePic: null,
     showButton: true,
     pics: [],
@@ -60,7 +60,7 @@ export class ImageGallery extends Component {
           this.setState({
             pics: [...this.state.pics, ...pic.data.hits],
             status: 'resolved',
-            showLoader: false,
+            loading: false,
             showButton: false,
           });
           return;
@@ -78,7 +78,7 @@ export class ImageGallery extends Component {
 
 
   getMorePages = async searchQuery => {
-    this.setState({ showLoader: true, showButton: false });
+    this.setState({ loading: true, showButton: false });
 
     try {
       const pic = await getImages(
@@ -90,14 +90,14 @@ export class ImageGallery extends Component {
         this.setState({
           pics: [...this.state.pics, ...pic.data.hits],
           status: 'resolved',
-          showLoader: false,
+          loading: false,
           showButton: false,
         });
       } else {
         this.setState({
           pics: [...this.state.pics, ...pic.data.hits],
           status: 'resolved',
-          showLoader: false,
+          loading: false,
           showButton: true,
         });
       }
@@ -122,7 +122,7 @@ export class ImageGallery extends Component {
       error,
       pics,
       showButton,
-      showLoader,
+      loading,
       showModal,
       largePic,
     } = this.state;
@@ -148,7 +148,7 @@ export class ImageGallery extends Component {
               <Modal switchModal={this.switchModal} largePic={largePic} />
             )}
             {showButton && <Button text="Load More" onBtnClick={this.changePage} />}
-            {showLoader && <Loader />}
+            {loading && <Loader />}
           </div>
         )}
       </>
