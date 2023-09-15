@@ -4,7 +4,7 @@ import css from './Item.module.css'
 export const ImageGalleryItem = ({ pic, onImgClick }) => {
   return (
         <li className={css.item}>
-          <img src={pic.webformatURL} alt={pic.tags} onClick={onImgClick} className={css.image}/>
+          <img src={pic.webformatURL} alt={pic.tags} onClick={() => onImgClick(pic)} className={css.image}/>
         </li>
   );
 };

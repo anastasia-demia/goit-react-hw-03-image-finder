@@ -3,6 +3,9 @@ import { Component } from 'react';
 import { createPortal } from 'react-dom';
 import css from './Modal.module.css'
 
+const modalRoot = document.querySelector('#modal-root');
+
+
 export class Modal extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
@@ -25,18 +28,17 @@ export class Modal extends Component {
   };
 
   render() {
-    const { largeImageURL, tags } = this.props.largePic;
-
     return createPortal(
       <div className={css.overlay} onClick={this.handleBackdpropClick}>
         <div className={css.modal}>
-          <img src={largeImageURL} alt={tags}/>
+          <img src={this.props.largePic.largeImageURL} alt={this.props.largePic.tags}/>
         </div>
-      </div>
+      </div>,
+      modalRoot
     );
   }
 }
 
 Modal.propTypes = {
-  toggleModal: PropTypes.func.isRequired,
+  switchModal: PropTypes.func.isRequired,
 };

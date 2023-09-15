@@ -23,7 +23,7 @@ export class ImageGallery extends Component {
     const searchQuery = this.props.searchQuery;
 
     if (prevProps.searchQuery !== this.props.searchQuery) {
-      await this.getPage(searchQuery);
+      await this.getNewPage(searchQuery);
     }
 
     if (
@@ -34,7 +34,7 @@ export class ImageGallery extends Component {
     }
   }
 
-  getPage = async searchQuery => {
+  getNewPage = async searchQuery => {
     this.setState({
       status: 'pending',
       showButton: true,
@@ -112,8 +112,8 @@ export class ImageGallery extends Component {
   };
 
   switchModal = pic => {
-    this.setState(({ showModal }) => ({ showModal: !showModal }));
     this.setState({ largePic: pic });
+    this.setState(({ showModal }) => ({ showModal: !showModal }));
   };
 
   render () {
@@ -145,7 +145,7 @@ export class ImageGallery extends Component {
               })}
             </ul>
             {showModal && (
-              <Modal toggleModal={this.switchModal} largePic={largePic} />
+              <Modal switchModal={this.switchModal} largePic={largePic} />
             )}
             {showButton && <Button text="Load More" onBtnClick={this.changePage} />}
             {showLoader && <Loader />}
