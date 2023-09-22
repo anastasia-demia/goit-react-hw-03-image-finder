@@ -14,7 +14,6 @@ export class App extends Component {
     error: null,
     status: 'idle',
     showModal: false,
-    loading: false,
     largePic: null,
     showButton: false,
     pics: [],
@@ -25,24 +24,20 @@ export class App extends Component {
     const searchQuery = this.state.searchQuery;
 
     if (prevProps.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) {
-      await this.getNewPage(searchQuery);
-    }
-  };
+      // await this.getNewPage(searchQuery)
 
-  getNewPage = async searchQuery => {
-    try {
+
       const pic = await getImages(
         searchQuery,
         this.state.page
       );
+
       if (pic.data.total === 0) {
         Notify.warning(
           `Sorry, there are no images matching your search query. Please try again.`
         );
-        this.setState({ showButton: false, status: 'idle' });
         return;
-      }
-      if (pic.data.hits.length < 12) {
+      } if (pic.data.hits.length < 12) {
         Notify.warning(`Sorry, there are no more images.`);
         this.setState({
           pics: [...this.state.pics, ...pic.data.hits],
@@ -50,17 +45,52 @@ export class App extends Component {
           showButton: false,
         });
         return;
-      }
+      } else {
       this.setState({
+        // pics: [...prevProps.pics, ...pic.data.hits], <-- i want previous pictures to be added first
+        // and then the new picture added to the pile so that makes new gallery after "Load More" btw is clicked
+        // everything works except adding more pictures
+        // how do i do that???
         pics: pic.data.hits,
         status: 'resolved',
         showButton: true,
-      });
-    } catch (error) {
-      this.setState({ error, status: 'rejected' });
-      Notify.failure(`Sorry, there was an error. Try a different word.`);
+      })}
     }
   };
+
+  // getNewPage = async searchQuery => {
+  //   // try {
+  //     // const pic = await getImages(
+  //     //   searchQuery,
+  //     //   this.state.page
+  //     // );
+
+  //     // if (pic.data.total === 0) {
+  //     //   Notify.warning(
+  //     //     `Sorry, there are no images matching your search query. Please try again.`
+  //     //   );
+  //     //   this.setState({ showButton: false, status: 'idle' });
+  //     //   return;
+  //     // } if (pic.data.hits.length < 12) {
+  //     //   Notify.warning(`Sorry, there are no more images.`);
+  //     //   this.setState({
+  //     //     pics: [...this.state.pics, ...pic.data.hits],
+  //     //     status: 'resolved',
+  //     //     showButton: false,
+  //     //   });
+  //     //   return;
+  //     // }
+  //     // else {
+  //     // this.setState({
+  //     //   pics: pic.data.hits,
+  //     //   status: 'resolved',
+  //     //   showButton: true,
+  //     // })}
+  //   // } catch (error) {
+  //   //   this.setState({ error, status: 'rejected' });
+  //   //   Notify.failure(`Sorry, there was an error. Try a different word.`);
+  //   // }
+  // };
 
   changePage = () => {
     this.setState({ page: this.state.page + 1 });
