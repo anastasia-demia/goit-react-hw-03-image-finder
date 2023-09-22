@@ -20,80 +20,35 @@ export class App extends Component {
     page: 1,
   };
 
-  async componentDidUpdate(prevProps, prevState) {
-    const searchQuery = this.state.searchQuery;
-
-    if (prevProps.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) {
-      // await this.getNewPage(searchQuery)
-
-
-      const pic = await getImages(
-        searchQuery,
-        this.state.page
-      );
-
-      if (pic.data.total === 0) {
-        Notify.warning(
-          `Sorry, there are no images matching your search query. Please try again.`
-        );
-        return;
-      } if (pic.data.hits.length < 12) {
-        Notify.warning(`Sorry, there are no more images.`);
-        this.setState({
-          pics: [...this.state.pics, ...pic.data.hits],
-          status: 'resolved',
-          showButton: false,
-        });
-        return;
-      } else {
-      this.setState({
-        // pics: [...prevProps.pics, ...pic.data.hits], <-- i want previous pictures to be added first
-        // and then the new picture added to the pile so that makes new gallery after "Load More" btw is clicked
-        // everything works except adding more pictures
-        // how do i do that???
-        pics: pic.data.hits,
-        status: 'resolved',
-        showButton: true,
-      })}
-    }
+  componentDidUpdate(_, prevState) {
+  if (prevState.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) {
+  this.getPage()}
   };
 
-  // getNewPage = async searchQuery => {
-  //   // try {
-  //     // const pic = await getImages(
-  //     //   searchQuery,
-  //     //   this.state.page
-  //     // );
+  getPage = async () => {
+    const { searchQuery, page } = this.state;
+    this.setState({status: 'pending'})
 
-  //     // if (pic.data.total === 0) {
-  //     //   Notify.warning(
-  //     //     `Sorry, there are no images matching your search query. Please try again.`
-  //     //   );
-  //     //   this.setState({ showButton: false, status: 'idle' });
-  //     //   return;
-  //     // } if (pic.data.hits.length < 12) {
-  //     //   Notify.warning(`Sorry, there are no more images.`);
-  //     //   this.setState({
-  //     //     pics: [...this.state.pics, ...pic.data.hits],
-  //     //     status: 'resolved',
-  //     //     showButton: false,
-  //     //   });
-  //     //   return;
-  //     // }
-  //     // else {
-  //     // this.setState({
-  //     //   pics: pic.data.hits,
-  //     //   status: 'resolved',
-  //     //   showButton: true,
-  //     // })}
-  //   // } catch (error) {
-  //   //   this.setState({ error, status: 'rejected' });
-  //   //   Notify.failure(`Sorry, there was an error. Try a different word.`);
-  //   // }
-  // };
+    try {
+      const pic = await getImages(searchQuery, page)
+
+      this.setState(prevState => ({
+        pics: [...prevState.pics, ...pic.hits],
+        status: 'resolved',
+        showButton: page < Math.ceil(pic.totalHits / 12),
+      }));
+    } catch (error) {
+      this.setState({status: 'rejected'})
+      Notify.warning(
+        `Sorry, there are no images matching your search query. Please try again.`
+      );
+    } finally {
+      this.setState({status: 'resolved'})
+    }
+  }
 
   changePage = () => {
-    this.setState({ page: this.state.page + 1 });
+    this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
   switchModal = pic => {
@@ -102,7 +57,7 @@ export class App extends Component {
   };
 
   handleFormSubmit = searchQuery => {
-    this.setState({ searchQuery });
+    this.setState({ searchQuery, pics:[] });
   };
 
   render() {
@@ -120,7 +75,7 @@ export class App extends Component {
         <Searchbar onSubmit={this.handleFormSubmit}/>
         {status === 'pending' && <Loader/>}
         {status === 'rejected' && (<h1>Whoops, something went wrong: {error.message}</h1>)}
-        {status === 'resolved' && ( <ImageGallery pics={pics} onImgClick={this.switchModal}/>)}
+        <ImageGallery pics={pics} onImgClick={this.switchModal}/>
         {showButton && <Button text="Load More" onBtnClick={this.changePage}/>}
         {showModal && (<Modal switchModal={this.switchModal} largePic={largePic}/>)}
       </div>
